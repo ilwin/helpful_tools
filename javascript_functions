@@ -1,0 +1,18 @@
+/*
+* Transforms numbers to string 
+* Example: 12345  become 12.345k.
+* @number - number
+* @decimals - number of decimals after a point mark
+*/
+export const numberToShortString = (number, decimals) => {
+  const str = number.toString();
+  const len = str.length;
+  if(len <= 3) {
+    return number;
+  }
+
+  const suffix = ['','','','','k', 'k', 'k', 'm', 'm', 'm', 'g', 'g', 'g', 't', 't', 't'];
+  const divideBy = [1,1,1,1,1000,1000,1000,1000000,1000000, 1000000, 10000000000,1000000000, 1000000000];
+
+  return (number/(divideBy[str.length])).toFixed(decimals).toString() + suffix[len];
+}

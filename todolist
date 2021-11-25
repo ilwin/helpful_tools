@@ -1,0 +1,79 @@
+App.js
+import './App.css';
+import {TodoContainer} from "./Todo/TodoContainer";
+
+let todos = [
+  {text:'learn AngularJS', done:true},
+  {text:'build an AngularJS app', done:false}
+];
+
+function App() {
+  return (
+    <TodoContainer todos={todos} />
+  );
+}
+
+export default App;
+--------------------------------------
+--------------------------------------
+TodoContainer.js
+import React, {useState, useEffect} from "react";
+import {TodoList} from "./TodoList";
+import {countBy, set, filter, sumBy} from "lodash";
+
+export const TodoContainer = (props) => {
+    const [taskName, setTaskName] = useState('');
+    const [todos, setTodos] = useState(props.todos);
+
+    const remaining = sumBy(todos, {done: false});
+
+    const addTodo = (event) => {
+        event.preventDefault();
+        setTodos(todos.concat({text: taskName, done: false}));
+    }
+
+    const archive = () => {
+        setTodos(filter(todos, {done: false}));
+    }
+
+    const toggleTodoDone = (changedTodoIndex) => {
+        const updatedTodos = todos.map((todo, index) => ({
+            ...todo,
+            done: index === changedTodoIndex ? !todo.done : todo.done
+        }))
+        setTodos(updatedTodos);
+    }
+
+    return (
+        <div>
+            <span>{remaining} of {todos.length} remaining</span>
+            <button onClick={archive}>archive</button>
+            <TodoList todos={todos} onToggleDone={toggleTodoDone}/>
+            <form onSubmit={addTodo}>
+                <input type="text" value={taskName}
+                       onChange={(event) => setTaskName(event.target.value)} size="30"
+                       placeholder="add new todo here"/>
+                <input className="btn-primary" type="submit" value="add"/>
+            </form>
+        </div>
+    )
+}
+
+-------------------------------------------------
+-------------------------------------------------
+Todo.js
+export const TodoList = ({todos, onToggleDone}) =>
+    (
+        <ul>
+            {todos.map((item, index) =>
+                (
+                    <li key={index}>
+                        <label className="checkbox">
+                            <input type="checkbox" checked={item.done} onChange={() => onToggleDone(index)}/>
+                            <span>{item.text}</span>
+                        </label>
+                    </li>
+                ))}
+        </ul>
+    )
+

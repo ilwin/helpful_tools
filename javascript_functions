@@ -1,10 +1,15 @@
-/*
-* Transforms numbers to string 
-* Example: 12345  become 12.345k.
-* @number - number
-* @decimals - number of decimals after a point mark
-*/
-export const numberToShortString = (number, decimals) => {
+[
+  {
+    description: "Generate a random string",
+    setCode: "const randomString = () => Math.random().toString(36).slice(2)",
+    resultExample: 'f3qixv40mot'
+    usageExample: "randomString() // gi1qtdego0b
+randomString() // f3qixv40mot
+randomString() // eeelv1pm3ja"
+  },
+  {
+    description: "Transforms numbers to string",
+    setCode: "const numberToShortString = (number, decimals) => {
   const str = number.toString();
   const len = str.length;
   if(len <= 3) {
@@ -16,3 +21,9 @@ export const numberToShortString = (number, decimals) => {
 
   return (number/(divideBy[str.length])).toFixed(decimals).toString() + suffix[len];
 }
+",
+    resultExample: '12345  becomes 12.345k'
+    usageExample: "numberToShortString(12345, 0)"
+  },
+}
+
